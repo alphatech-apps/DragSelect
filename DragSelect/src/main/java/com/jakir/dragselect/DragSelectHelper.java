@@ -38,7 +38,7 @@ public class DragSelectHelper {
                 lastPos = pos;
             }
 
-            autoScrollHandler.postDelayed(this, 100);
+            autoScrollHandler.postDelayed(this, 16);
         }
     };
     private float topZone, bottomZone;
