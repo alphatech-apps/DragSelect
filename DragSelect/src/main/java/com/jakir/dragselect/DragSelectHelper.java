@@ -116,9 +116,11 @@ public class DragSelectHelper {
     }
 
     // Must call after layout load
-    public void updateZones() {
-        topZone = recyclerView.getHeight() * 0.10f;
-        bottomZone = recyclerView.getHeight() * 0.70f;
+    public void updateZones(float topEdge, float bottomEdge) {
+        topZone = recyclerView.getHeight() * topEdge;
+        bottomZone = recyclerView.getHeight() * bottomEdge;
+//        topZone = recyclerView.getHeight() * 0.10f;
+//        bottomZone = recyclerView.getHeight() * 0.70f;
     }
 
     // External dependencies

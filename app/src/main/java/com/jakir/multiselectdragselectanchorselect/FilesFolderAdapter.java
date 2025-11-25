@@ -149,7 +149,7 @@ public class FilesFolderAdapter extends RecyclerView.Adapter<FilesFolderAdapter.
                     lastDragPos.set(pos);
                     isRangeMode = false;
                 });
-                recyclerView.post(dragHelper::updateZones);
+                recyclerView.post(()-> dragHelper.updateZones(0.10f,0.90f));
                 dragHelper.startSelection(position);
             }
         }
