@@ -26,13 +26,13 @@ public class BaseActivity extends AppCompatActivity {
         Configuration configuration = new Configuration();
         configuration.locale = locale;
         context.getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
-        Pref.setPref(languageCode, "language", context);
+        Pref.setString("language",languageCode,  context);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(Pref.getTheme(this)); //set theme
-        setLocal(Pref.getPref("language", this), this); // set language
+        setLocal(Pref.getString("language", this), this); // set language
     }
 }

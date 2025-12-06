@@ -83,7 +83,7 @@ public class ActivityFilesFolder extends BaseActivity {
 //        swipeRefreshLayout.setOnRefreshListener(() -> {
 //            swipeRefreshLayout.setRefreshing(false);
 //            // Skip if multiSelect on
-//            if (Pref.getState(Key.multiSelectMode, this)) return;
+//            if (Pref.getBoolean()(Key.multiSelectMode, this)) return;
 //            // otherwise reload files
 ////            loadFilesAndUpdateRecyclerview(true);
 //            loadFilesInBackground(true);
@@ -107,7 +107,7 @@ public class ActivityFilesFolder extends BaseActivity {
                 .setItems(options, (dialog, which) -> {
 
                     // which = 0,1,2
-                    Pref.setInt(Key.multiSelectMethod, which, this); // save
+                    Pref.setInteger(Key.multiSelectMethod, which, this); // save
 
                     // Now load RecyclerView
                 }).show()
@@ -193,7 +193,7 @@ public class ActivityFilesFolder extends BaseActivity {
             boolean multiselect = adapter.isMultiSelectMode() && !adapter.getSelectedFiles().isEmpty();
             int totalItem = adapter.getItemCount();
             boolean pasteMode = isPasteMode();
-            boolean isGrid = Pref.getState(Key.isGrid, this);
+            boolean isGrid = Pref.getBoolean(Key.isGrid, this);
 
             // Multi-select menu visibility
             menu.findItem(R.id.menu_action_select_all).setVisible(multiselect && selectedItem != totalItem && !pasteMode);
@@ -221,8 +221,8 @@ public class ActivityFilesFolder extends BaseActivity {
 
 
         }
-//         swipeRefreshLayout.setEnabled(!Pref.getState(Key.multiSelectMode, this));
-        updateToolbarScrollBehavior(!Pref.getState(Key.multiSelectMode, this));
+//         swipeRefreshLayout.setEnabled(!Pref.getBoolean()(Key.multiSelectMode, this));
+        updateToolbarScrollBehavior(!Pref.getBoolean(Key.multiSelectMode, this));
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -265,7 +265,7 @@ public class ActivityFilesFolder extends BaseActivity {
 
 
     public boolean isPasteMode() {
-        return Pref.getState(Key.pastetMode, this) && !clipboardList.isEmpty();
+        return Pref.getBoolean(Key.pastetMode, this) && !clipboardList.isEmpty();
     }
 
 

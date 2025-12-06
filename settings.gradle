@@ -21,7 +21,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Multiselect DragSelect AnchorSelect"
+rootProject.name = "DragSelect"
 include ':app'
 
 include ':DragSelect'

@@ -67,8 +67,8 @@ public class FilesFolderAdapter extends RecyclerView.Adapter<FilesFolderAdapter.
         File file = filesAndFolders.get(position);
         holder.itemView.setTag(file.getPath()); // tag for recycling validation
 
-        holder.threeDot.setVisibility((Pref.getState(Key.multiSelectMode, context) || isGrid || activityFilesFolder.isPasteMode()) ? GONE : VISIBLE);
-        holder.selection.setVisibility((Pref.getState(Key.multiSelectMode, context) || isGrid || activityFilesFolder.isPasteMode()) ? VISIBLE : GONE);
+        holder.threeDot.setVisibility((Pref.getBoolean(Key.multiSelectMode, context) || isGrid || activityFilesFolder.isPasteMode()) ? GONE : VISIBLE);
+        holder.selection.setVisibility((Pref.getBoolean(Key.multiSelectMode, context) || isGrid || activityFilesFolder.isPasteMode()) ? VISIBLE : GONE);
 
         holder.fileName.setText(file.getName());
         holder.icon.setImageResource(R.drawable.ic_select_all_24px);
@@ -77,7 +77,7 @@ public class FilesFolderAdapter extends RecyclerView.Adapter<FilesFolderAdapter.
         holder.selection.setImageDrawable(selectedFiles.contains(file) ? ContextCompat.getDrawable(context, R.drawable.ic_circle_check_svgrepo_com) : null);
 
         holder.itemView.setOnClickListener(v -> {
-            if (Pref.getState(Key.multiSelectMode, context)) {
+            if (Pref.getBoolean(Key.multiSelectMode, context)) {
                 toggleSelectionUnified(false, position, holder);
             } else {
                 // your "open" logic here
@@ -98,7 +98,7 @@ public class FilesFolderAdapter extends RecyclerView.Adapter<FilesFolderAdapter.
     }
 
     public boolean isMultiSelectMode() {
-        return Pref.getState(Key.multiSelectMode, context);
+        return Pref.getBoolean(Key.multiSelectMode, context);
     }
 
     public void selectAllFiles() {
@@ -121,7 +121,7 @@ public class FilesFolderAdapter extends RecyclerView.Adapter<FilesFolderAdapter.
 
     // Unified toggle method
     private void toggleSelectionUnified(boolean longClick, int position, ViewHolder holder) {
-        int method = Pref.getInt(Key.multiSelectMethod, context); // 0 = dual, 1 = anchor, 2 = drag
+        int method = Pref.getInteger(Key.multiSelectMethod, context); // 0 = dual, 1 = anchor, 2 = drag
         File file = filesAndFolders.get(position);
 
         if (!longClick) {
@@ -155,7 +155,7 @@ public class FilesFolderAdapter extends RecyclerView.Adapter<FilesFolderAdapter.
         }
 
         boolean selectedFilesIsEmpty = selectedFiles.isEmpty();
-        Pref.setState(!selectedFilesIsEmpty, Key.multiSelectMode, context);
+        Pref.setBoolean(Key.multiSelectMode, !selectedFilesIsEmpty, context);
         activityFilesFolder.invalidateOptionsMenu();
 
         if (selectedFilesIsEmpty) isRangeMode = false;
@@ -192,7 +192,7 @@ public class FilesFolderAdapter extends RecyclerView.Adapter<FilesFolderAdapter.
     public void clearSelection(Context context) {
         selectedFiles.clear();
         isRangeMode = false;
-        Pref.setState(false, Key.multiSelectMode, context);
+        Pref.setBoolean( Key.multiSelectMode, false,context);
         notifyDataSetChanged();
     }
 
