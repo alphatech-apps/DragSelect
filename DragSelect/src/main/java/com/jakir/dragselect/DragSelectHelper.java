@@ -1,5 +1,7 @@
 package com.jakir.dragselect;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
@@ -67,8 +69,8 @@ public class DragSelectHelper {
     // -----------------------------------
     // Touch listener setup
     // -----------------------------------
+    @SuppressLint("ClickableViewAccessibility")
     private void setupTouchListener() {
-
         recyclerView.setOnTouchListener((v, e) -> {
 
             lastTouchY = e.getY();
@@ -89,13 +91,17 @@ public class DragSelectHelper {
 
                         if (lastTouchY < topZone) {
                             autoScrollSpeed.set(-42);
-                            if (!autoScrollHandler.hasCallbacks(autoScrollRunnable))
-                                autoScrollHandler.post(autoScrollRunnable);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                                if (!autoScrollHandler.hasCallbacks(autoScrollRunnable))
+                                    autoScrollHandler.post(autoScrollRunnable);
+                            }
 
                         } else if (lastTouchY > bottomZone) {
                             autoScrollSpeed.set(42);
-                            if (!autoScrollHandler.hasCallbacks(autoScrollRunnable))
-                                autoScrollHandler.post(autoScrollRunnable);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                                if (!autoScrollHandler.hasCallbacks(autoScrollRunnable))
+                                    autoScrollHandler.post(autoScrollRunnable);
+                            }
 
                         } else {
                             autoScrollHandler.removeCallbacks(autoScrollRunnable);
@@ -105,11 +111,21 @@ public class DragSelectHelper {
                     }
                     break;
 
-                case MotionEvent.ACTION_UP:
-                case MotionEvent.ACTION_CANCEL:
+            case MotionEvent.ACTION_UP:
+                if (isSelecting) {
                     stopSelection();
-                    break;
-            }
+                    v.performClick(); // performClick কল করা হচ্ছে
+                    return true; // ইভেন্টটি পরিচালনা করা হয়েছে
+                }
+                break;
+
+            case MotionEvent.ACTION_CANCEL:
+                if (isSelecting) {
+                    stopSelection();
+                    return true; // ইভেন্টটি পরিচালনা করা হয়েছে
+                }
+                break;
+        }
 
             return false;
         });
